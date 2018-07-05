@@ -9,30 +9,30 @@
 import UIKit
 import CoreData
 
-class FiestViewController: UIViewController {
+class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let picker = UIDatePicker()
     
     @IBOutlet weak var textFild: UITextField!
     @IBOutlet weak var textField2: UITextField!
+    @IBOutlet weak var textField3: UITextField!
+    @IBOutlet weak var picture1: UIImageView!
+    @IBOutlet weak var textView1: UITextView!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        
-//        ここには見えない＝が入ってると思え！(ex)best = "321"
-        createMemory(fes: textFild.text!,best: "321", date: textField2.text!)
-        
         readMemory()
         createDatePicker()
+        Image.image = UIImage(named: "icon.png")
         
     }
     
-    
-    //    日付のtextFieldが押されたら、datePickerをだす
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+//    日付のtextFieldが押されたら、datePickerをだす
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
     
     func createDatePicker(){
         
@@ -65,15 +65,61 @@ class FiestViewController: UIViewController {
         self.view.endEditing(true)
         
     }
-    //    ここまで↑が日付の処理
-   
+//    ここまで↑が日付の処理
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+  
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+//    登録ボタンが押されたらコアデータを登録する処理。
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
     
-//コアデータにInsert into
-    func createMemory(fes:String, best:String, date:String){
+    @IBAction func Reg(_ sender: Any) {
+        
+//        ※まじ重要※ ここには見えない＝が入ってると思え！(ex)best = "321"
+        createMemory(fes: textFild.text!,best: textField3.text!, date: textField2.text!, impression: textView1.text!, picture: picture1.image!)
+        
+        let storyboard: UIStoryboard = self.storyboard!
+        let nextView = storyboard.instantiateViewController(withIdentifier: "Done") as! DoneViewController
+        self.present(nextView, animated: true, completion: nil)
+        
+
+    }
+    
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+    
+    
+//    ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+//    JPGをDocumentsフォルダへ保存
+//    ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+    
+    func storeJpgImageInDocument(image: UIImage , name: String) {
+        let documentDirectory =  NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) // [String]型
+        let dataUrl = URL.init(fileURLWithPath: documentDirectory[0], isDirectory: true) //URL型 Documentpath
+        
+        let dataPath = dataUrl.appendingPathComponent(name)
+        //URL型 documentへのパス + ファイル名
+        
+        // UIImageJPEGRepresentationの後ろは1が最大のクオリティ
+        // https://qiita.com/marty-suzuki/items/159b1c5d47fb00c11fda
+        let myData = UIImageJPEGRepresentation(image, 1.0)! as NSData // Data?型　→ NSData型
+        
+        myData.write(toFile: dataPath.path , atomically: true) // NSData型の変数.write(String型,Bool型)
+        
+    }
+    
+// ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+    
+// ※※※※※※※※※※※※※※※※※※※※※※※※※※
+//   コアデータにInsert into
+// ※※※※※※※※※※※※※※※※※※※※※※※※※※
+
+    func createMemory(fes:String, best:String, date:String, impression:String, picture:UIImage){
         
         print(fes)
         print(best)
         print(date)
+        print(impression)
+        print(picture)
+        
 
         let appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -83,13 +129,27 @@ class FiestViewController: UIViewController {
 
         // contextに１レコード追加
         let newRecord = NSManagedObject(entity: Memory!, insertInto: manageContext)
-
+        
+        //        ユニークIDを生成する。
+        let pictureId = NSUUID().uuidString
+        
         // レコードに値の設定
         newRecord.setValue(fes, forKey: "fes")
         newRecord.setValue(date, forKey: "date")
         newRecord.setValue(best, forKey: "best")
-
-
+        newRecord.setValue(impression, forKey: "impression")
+        newRecord.setValue(pictureId, forKey: "picture")
+//        newRecord.setValue(picture, forKey: "picture")
+        storeJpgImageInDocument(image: picture, name: "\(pictureId)")
+        
+        
+//        pictureIdをnewRecord.setValueに入れたのは、キー（パス）をコアデータに保存したかったから。
+//storeJpgImageInDocumentで写真データをフォルダに保存しているよ。
+        
+        
+//pictureIdはクリエイトする際のひと塊りの名前＋写真のキーにもなる。
+//        今後、これをどのように取り出すのか？　例：user defaultを使用。
+        
         do {
             try manageContext.save()  // throw はdocatchとセットで使う
         } catch  {
@@ -98,9 +158,13 @@ class FiestViewController: UIViewController {
 
         }
 
+        readMemory()
+
     }
-    
+// ※※※※※※※※※※※※※※※※※※※※※
 //    コアデータ呼び出し
+// ※※※※※※※※※※※※※※※※※※※※※
+    
     func readMemory() {
         // Read処理
         // AppDelegateのインスタンス化
@@ -129,18 +193,125 @@ class FiestViewController: UIViewController {
                 // １件ずつ取り出し
                 let fes:String? = result.value(forKey: "fes") as? String
                 let date = result.value(forKey: "date") as? String
-                
-                print("fes:\(fes)","date:\(date)")
+                let best = result.value(forKey: "best") as? String
+                let impression = result.value(forKey: "impression") as? String
+                let pictureId = result.value(forKey: "picture") as? String
+                let picture:UIImage = readJpgImageInDocument(nameOfImage: pictureId!)!
+                print("fes:\(fes)","date:\(date)","best:\(best)","impression:\(impression)","picture:\(picture)", "pictureId:\(pictureId)")
             }
         } catch  {
             print("read error:",error)
         }
         
+    }
+  
+    
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+//    JPGをdocumentフォルダから読み出し
+//※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+    
+    
+    func readJpgImageInDocument(nameOfImage: String) -> UIImage? {
+        let documentDirectory =  NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) // [String]型
+
+        let dataUrl = URL.init(fileURLWithPath: documentDirectory[0], isDirectory: true)  //URL型 Documentpath
+        let dataPath = dataUrl.appendingPathComponent(nameOfImage)
+
+        do {
+
+            let myData = try Data(contentsOf: dataPath, options: [])
+            let image =  UIImage.init(data: myData)
+
+            return image
+
+        }catch {
+            print(error)
+            return nil
+        }
+
+    }
+
+
+    
+    
+    
+//    カメラ
+    
+    @IBOutlet weak var Image: UIImageView!
+    
+    @IBAction func choose(_ sender: UIButton) {
         
+        // カメラロールが利用可能か？
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            // 写真を選ぶビュー
+            let pickerView = UIImagePickerController()
+            // 写真の選択元をカメラロールにする
+            // 「.camera」にすればカメラを起動できる
+            pickerView.sourceType = .photoLibrary
+            // デリゲート
+            pickerView.delegate = self
+            // ビューに表示
+            self.present(pickerView, animated: true)
+        }
         
     }
     
+    // 写真を選んだ後に呼ばれる処理
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        // 選択した写真を取得する
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        // ビューに表示する
+        self.Image.image = image
+        // 写真を選ぶビューを引っ込める
+        self.dismiss(animated: true)
+    }
     
+    
+    @IBAction func rewrite(_ sender: UIButton) {
+        
+            // アラートで確認
+            let alert = UIAlertController(title: "確認", message: "画像を初期化してもよいですか？", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "OK", style: .default, handler:{(action: UIAlertAction) -> Void in
+                // デフォルトの画像を表示する
+                self.Image.image = UIImage(named: "default.png")
+            })
+            let cancelButton = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+            // アラートにボタン追加
+            alert.addAction(okButton)
+            alert.addAction(cancelButton)
+            // アラート表示
+            present(alert, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func tapImage(_ sender: UITapGestureRecognizer) {
+        print("eee")
+        
+//        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+//            let picker = UIImagePickerController()
+//            picker.sourceType = .photoLibrary
+//            picker.delegate = self
+//            self.present(picker, animated: true, completion: nil)
+//        }
+        
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let nextView = storyboard.instantiateViewController(withIdentifier: "Photo") as! PhotoViewController
+        
+        nextView.image = Image.image
+        present(nextView, animated: true, completion: nil)
+    }
+    
+//    func ImagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+//
+//        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let nextView = storyboard.instantiateViewController(withIdentifier: "Photo") as! PhotoViewController
+//
+//        nextView.image = image
+//
+//        self.dismiss(animated: false)
+//        present(nextView, animated: true, completion: nil)
+//    }
     
 
 }
