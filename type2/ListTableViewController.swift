@@ -143,9 +143,28 @@ class ListTableViewController: UITableViewController {
         
         readMemory()
         
-        cell.textLabel?.text = "\(Feslog.date!)"
+        cell.textLabel?.text = "\(Feslog.fes!)(.\(Feslog.date!))"
+//        cell.textLabel?.text = "\(Feslog.fes!)"
 
         return cell
+    }
+    
+    var selectedIndex:Memory!
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndex = getMemory[indexPath.row]
+        print(getMemory[indexPath.row])
+        
+       performSegue(withIdentifier: "toSpecific", sender: nil)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let dvc:List2ViewController = segue.destination as! List2ViewController
+        
+        dvc.passedIndex = selectedIndex
+
     }
     
 
@@ -154,10 +173,9 @@ class ListTableViewController: UITableViewController {
         // Return false if you do not want the specified item to be editable.
         return true
         
-        
-        
-        
     }
+    
+    
 
     /*
     // Override to support editing the table view.

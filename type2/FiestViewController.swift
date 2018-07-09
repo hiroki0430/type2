@@ -231,10 +231,6 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
 
     }
 
-
-    
-    
-    
 //    カメラ
     
     @IBOutlet weak var Image: UIImageView!
