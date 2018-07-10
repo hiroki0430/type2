@@ -281,7 +281,7 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
     }
     
     @IBAction func tapImage(_ sender: UITapGestureRecognizer) {
-        print("eee")
+//        print("eee")
         
 //        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
 //            let picker = UIImagePickerController()

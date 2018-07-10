@@ -79,7 +79,7 @@
         <!--一覧-->
         <scene sceneID="Jzk-zZ-CV0">
             <objects>
-                <viewController id="1T1-cl-zcr" customClass="List2ViewController" customModule="type2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Main2" id="1T1-cl-zcr" customClass="List2ViewController" customModule="type2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Be-7F-Luw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,9 +106,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ma-uM-lPW">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ma-uM-lPW">
                                 <rect key="frame" x="74" y="484" width="240" height="144"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="OLn-uL-we1" appends="YES" id="qiN-IC-Mi1"/>
+                                </connections>
                             </imageView>
                             <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MyL-7o-2XJ">
                                 <rect key="frame" x="62" y="174" width="264" height="30"/>
@@ -134,16 +138,22 @@
                         <outlet property="Fes" destination="LrC-5R-DCc" id="E2U-01-LWV"/>
                         <outlet property="Picture" destination="7Ma-uM-lPW" id="uei-iw-oD6"/>
                         <outlet property="impression" destination="nBW-oP-9XJ" id="uua-Cw-kkr"/>
+                        <outlet property="tapgesture" destination="OLn-uL-we1" id="JzG-xo-Wye"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mTr-6A-UG4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="OLn-uL-we1">
+                    <connections>
+                        <action selector="tapTap:" destination="1T1-cl-zcr" id="CEO-7i-1lL"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2288.8000000000002" y="216.34182908545728"/>
         </scene>
         <!--Photo2 View Controller-->
         <scene sceneID="j5Q-rh-6Yy">
             <objects>
-                <viewController id="lT1-zF-KRf" customClass="photo2ViewController" customModule="type2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="photo2" id="lT1-zF-KRf" customClass="photo2ViewController" customModule="type2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Wnn-pY-Dgg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

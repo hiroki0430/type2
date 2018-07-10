@@ -8,10 +8,12 @@
 
 import UIKit
 
-class List2ViewController: UIViewController {
+class List2ViewController: UIViewController
+,UIGestureRecognizerDelegate{
     
     var passedIndex:Memory!
     
+    @IBOutlet var tapgesture: UITapGestureRecognizer!
     @IBOutlet weak var Fes: UITextField!
     @IBOutlet weak var Date: UITextField!
     @IBOutlet weak var Best: UITextField!
@@ -45,7 +47,8 @@ class List2ViewController: UIViewController {
         super.viewDidLoad()
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         print(urls[urls.count-1] as URL)
-
+        tapgesture.delegate = self
+        Picture.addGestureRecognizer(tapgesture)
         
 //        print("viewdidloadだよ")
 //        print(passedIndex!)
@@ -87,6 +90,22 @@ class List2ViewController: UIViewController {
     
 //    編集ボタンが押された時（表示された内容を変更可能にする）
     
+    @IBAction func tapTap(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended{
+        print("111")
+        
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main2", bundle: nil)
+        let nextView1 = storyboard.instantiateViewController(withIdentifier: "Photo2") as! photo2ViewController
+            
+//            let myView = photo2ViewController()
+
+//        nextView1.image = Picture.image
+//            myView.image = Picture.image
+        present(nextView1, animated: true,
+                completion: nil)
+        }
+    }
+    
     @IBAction func EditButton(_ sender: UIBarButtonItem) {
         
         Fes.isUserInteractionEnabled = true
@@ -100,25 +119,5 @@ class List2ViewController: UIViewController {
         impression.textAlignment = .center
         
     }
-    
-    
-    
-    
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
