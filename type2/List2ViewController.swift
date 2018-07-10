@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 class List2ViewController: UIViewController
 ,UIGestureRecognizerDelegate{
     
     var passedIndex:Memory!
+    
+//    let hoge = CoreDataManager(setEntityName: "Memory", attributeNames: ["best","fes","date","impression","picture","id"])
     
     @IBOutlet var tapgesture: UITapGestureRecognizer!
     @IBOutlet weak var Fes: UITextField!
@@ -38,7 +41,7 @@ class List2ViewController: UIViewController
             print(error)
             return nil
         }
-        
+//hoge.create(values: ["a","b"])
     }
     
     override func viewDidLoad() {
@@ -50,24 +53,24 @@ class List2ViewController: UIViewController
         tapgesture.delegate = self
         Picture.addGestureRecognizer(tapgesture)
         
-//        print("viewdidloadだよ")
-//        print(passedIndex!)
-    
-//            JPGをdocumentフォルダから読み出し
-//        ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-//        これはcreateした時の画像をフォルダから読み出してきている。
+        //        print("viewdidloadだよ")
+        //        print(passedIndex!)
+        
+        //            JPGをdocumentフォルダから読み出し
+        //        ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //        これはcreateした時の画像をフォルダから読み出してきている。
         readJpgImageInDocument(nameOfImage: passedIndex.picture!)!
-    
-            
-//        let log = passedIndex!
-//        let mem = passedIndex as! Memory
-            
-            
+        
+        
+        //        let log = passedIndex!
+        //        let mem = passedIndex as! Memory
+        
+        
         Fes.text = passedIndex.fes
         Best.text = passedIndex.best
         Date.text = passedIndex.date
         impression.text = passedIndex.impression
-       Picture.image = readJpgImageInDocument(nameOfImage: passedIndex.picture!)!
+        Picture.image = readJpgImageInDocument(nameOfImage: passedIndex.picture!)!
         
         
         
@@ -83,41 +86,113 @@ class List2ViewController: UIViewController
         
         
         
-
+        
         // Do any additional setup after loading the view.
     }
     
-    
-//    編集ボタンが押された時（表示された内容を変更可能にする）
-    
-    @IBAction func tapTap(_ sender: UITapGestureRecognizer) {
-        if sender.state == .ended{
-        print("111")
-        
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main2", bundle: nil)
-        let nextView1 = storyboard.instantiateViewController(withIdentifier: "Photo2") as! photo2ViewController
-            
-//            let myView = photo2ViewController()
-
-//        nextView1.image = Picture.image
-//            myView.image = Picture.image
-        present(nextView1, animated: true,
-                completion: nil)
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
+        if sender.state == .recognized {
+        print("321")
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let nextView1 = storyboard.instantiateViewController(withIdentifier: "photo2") as! photo2ViewController
+        nextView1.image = Picture.image
+        present(nextView1, animated: true,completion: nil)
         }
+    }
+    
+    
+    
+    
+    
+//-----------------------------------------
+//    @IBAction func tapTap(_ sender: UITapGestureRecognizer) {
+//        if sender.state == .ended{
+//            print("111")
+//
+//            let storyboard: UIStoryboard = UIStoryboard(name: "Main2", bundle: nil)
+//            let nextView1 = storyboard.instantiateViewController(withIdentifier: "Photo2") as! photo2ViewController
+//
+//            //            let myView = photo2ViewController()
+//
+//            //        nextView1.image = Picture.image
+//            //            myView.image = Picture.image
+//            present(nextView1, animated: true,
+//                    completion: nil)
+//        }
+//    }
+//-------------------------------------------
+    //    削除ボタンが押された時
+    
+    
+    @IBAction func deleteBtn(_ sender: UIButton) {
+        
+        let alertController = UIAlertController(title: "削除しますか？", message: nil, preferredStyle: .alert)
+        
+        let cancelAction:UIAlertAction = UIAlertAction(title: "やっぱ止める", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
+            
+        })
+        
+        let deleteAction:UIAlertAction = UIAlertAction(title: "削除", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
+            
+            //            coredata削除の処理をかく
+            self.deleteMemory(uuid: self.passedIndex.picture!)
+            self.performSegue(withIdentifier: "back", sender: nil)
+            
+            
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        present(alertController,animated: true,completion: nil)
+        
+        
+        
     }
     
     @IBAction func EditButton(_ sender: UIBarButtonItem) {
         
-        Fes.isUserInteractionEnabled = true
-        Best.isUserInteractionEnabled = true
-        Date.isUserInteractionEnabled = true
-        impression.isUserInteractionEnabled = true
+        let alertController = UIAlertController(title: "削除しますか？", message: nil, preferredStyle: .alert)
         
-        Fes.textAlignment = .center
-        Best.textAlignment = .center
-        Date.textAlignment = .center
-        impression.textAlignment = .center
+        let cancelAction:UIAlertAction = UIAlertAction(title: "やっぱ止める", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
+            
+        })
+        
+        let deleteAction:UIAlertAction = UIAlertAction(title: "削除", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
+            
+            //            coredata削除の処理をかく
+            self.deleteMemory(uuid: self.passedIndex.picture!)
+            self.performSegue(withIdentifier: "back", sender: nil)
+            
+            
+})
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        present(alertController,animated: true,completion: nil)
+}
+    func deleteMemory(uuid:String){
+        
+        let appdel = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appdel.persistentContainer.viewContext
+        // 読み込むエンティティを指定
+        let fetchReq = NSFetchRequest<NSFetchRequestResult>(entityName: "Memory")
+        // 更新するデータを指定する。この場合ショップ名が市場のレコード。
+        let predict = NSPredicate(format: "picture = %@", uuid)
+        fetchReq.predicate = predict
+        // データを格納する空の配列を用意
+        var results:[Memory] = []
+        // 読み込み実行
+        do {
+            //                results = try managedContext.executeFetchRequest(fetchReq)
+            results = try managedContext.fetch(fetchReq) as! [Memory]
+            let result = results[0]
+            managedContext.delete(result)
+        }catch{
+            print(error)
+        }
+        // 保存
+        do{
+            try managedContext.save()
+        }catch{
+        }
         
     }
-
 }

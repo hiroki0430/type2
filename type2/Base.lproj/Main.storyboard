@@ -22,7 +22,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mck-iv-dT4">
                                 <rect key="frame" x="0.0" y="294" width="375" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="入力"/>
                                 <connections>
                                     <segue destination="UfS-5o-pft" kind="show" id="k9X-zC-jeo"/>
                                 </connections>
@@ -121,12 +121,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABD-sw-cYo">
+                                <rect key="frame" x="306" y="66" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="🆑"/>
+                                <connections>
+                                    <action selector="deleteBtn:" destination="1T1-cl-zcr" eventType="touchUpInside" id="h41-76-o7x"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="g4l-3F-zqE"/>
                     </view>
                     <navigationItem key="navigationItem" title="一覧" id="wRs-qa-tDp">
-                        <barButtonItem key="rightBarButtonItem" title="編集" id="rsE-yH-d7H">
+                        <barButtonItem key="rightBarButtonItem" title="削除" id="rsE-yH-d7H">
                             <connections>
                                 <action selector="EditButton:" destination="1T1-cl-zcr" id="LqR-0Z-QlV"/>
                             </connections>
@@ -139,12 +147,13 @@
                         <outlet property="Picture" destination="7Ma-uM-lPW" id="uei-iw-oD6"/>
                         <outlet property="impression" destination="nBW-oP-9XJ" id="uua-Cw-kkr"/>
                         <outlet property="tapgesture" destination="OLn-uL-we1" id="JzG-xo-Wye"/>
+                        <segue destination="KFA-ww-ATa" kind="show" identifier="back" id="CYr-yS-Gk1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mTr-6A-UG4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="OLn-uL-we1">
                     <connections>
-                        <action selector="tapTap:" destination="1T1-cl-zcr" id="CEO-7i-1lL"/>
+                        <action selector="tapAction:" destination="1T1-cl-zcr" id="3QC-BX-nhT"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -384,4 +393,7 @@
             <point key="canvasLocation" x="-218.40000000000001" y="217.24137931034485"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="CYr-yS-Gk1"/>
+    </inferredMetricsTieBreakers>
 </document>
