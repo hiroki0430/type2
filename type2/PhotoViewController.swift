@@ -20,7 +20,7 @@ class PhotoViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         imageView.image = image
-        imageView.contentMode = UIViewContentMode.scaleAspectFit
+//        imageView.contentMode = UIViewContentMode.scaleAspectFit
         
     }
     

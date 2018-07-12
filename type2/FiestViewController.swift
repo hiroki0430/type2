@@ -27,6 +27,10 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
         readMemory()
         createDatePicker()
         Image.image = UIImage(named: "icon.png")
+        textFild.placeholder = "どのフェスに行ったの？"
+        textField2.placeholder = "いつ行ったの？"
+        textField3.placeholder = "ベストアクトを教えてよ！"
+        
         
     }
     
@@ -77,11 +81,25 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
 //        ※まじ重要※ ここには見えない＝が入ってると思え！(ex)best = "321"
         createMemory(fes: textFild.text!,best: textField3.text!, date: textField2.text!, impression: textView1.text!, picture: picture1.image!)
         
-        let storyboard: UIStoryboard = self.storyboard!
-        let nextView = storyboard.instantiateViewController(withIdentifier: "Done") as! DoneViewController
-        self.present(nextView, animated: true, completion: nil)
         
+        let alertButton = UIAlertController(title: "登録完了しました。", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let OkButton = UIAlertAction(title: "OK!", style: UIAlertActionStyle.default, handler: { (action: UIAlertAction!) in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
+                self.performSegue(withIdentifier: "List", sender: nil)
+            })
+            
+            })
+        
+        alertButton.addAction(OkButton)
+        present(alertButton, animated: true, completion: nil)
 
+        
+        
+//        let storyboard: UIStoryboard = self.storyboard!
+//        let nextView = storyboard.instantiateViewController(withIdentifier: "Done") as! DoneViewController
+//        self.present(nextView, animated: true, completion: nil)
+//
     }
     
 //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※

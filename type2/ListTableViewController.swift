@@ -14,6 +14,9 @@ import CoreData
 class ListTableViewController: UITableViewController {
     
     @IBOutlet weak var myTableView: UITableView!
+    
+   
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +64,7 @@ class ListTableViewController: UITableViewController {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Memory")
         do {
             getMemory = try managedContext.fetch(fetchRequest) as! [Memory]
-//            refreshTableView()
+            refreshTableView()
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -72,6 +75,12 @@ class ListTableViewController: UITableViewController {
     func refreshTableView(){
         myTableView.reloadData()
     }
+    
+    @IBAction func unwindMe(segue: UIStoryboardSegue) {
+//        myTableView.reloadData()
+    }
+
+    
     
 
 //    createしたデータは配列にいれ、フェッチして出す。
@@ -161,10 +170,12 @@ class ListTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        if segue.identifier == "toSpecific"{
         let dvc:List2ViewController = segue.destination as! List2ViewController
         
         dvc.passedIndex = selectedIndex
 
+      }
     }
     
 

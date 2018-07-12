@@ -90,6 +90,7 @@ class List2ViewController: UIViewController
         // Do any additional setup after loading the view.
     }
     
+    
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         if sender.state == .recognized {
         print("321")
@@ -124,32 +125,33 @@ class List2ViewController: UIViewController
     //    削除ボタンが押された時
     
     
-    @IBAction func deleteBtn(_ sender: UIButton) {
-        
-        let alertController = UIAlertController(title: "削除しますか？", message: nil, preferredStyle: .alert)
-        
-        let cancelAction:UIAlertAction = UIAlertAction(title: "やっぱ止める", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
-            
-        })
-        
-        let deleteAction:UIAlertAction = UIAlertAction(title: "削除", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
-            
-            //            coredata削除の処理をかく
-            self.deleteMemory(uuid: self.passedIndex.picture!)
-            self.performSegue(withIdentifier: "back", sender: nil)
-            
-            
-        })
-        alertController.addAction(cancelAction)
-        alertController.addAction(deleteAction)
-        present(alertController,animated: true,completion: nil)
-        
-        
-        
-    }
+//    @IBAction func deleteBtn(_ sender: UIButton) {
+//        
+//        let alertController = UIAlertController(title: "削除しますか？", message: nil, preferredStyle: .alert)
+//        
+//        let cancelAction:UIAlertAction = UIAlertAction(title: "やっぱ止める", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
+//            
+//        })
+//        
+//        let deleteAction:UIAlertAction = UIAlertAction(title: "削除", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
+//            
+//            //            coredata削除の処理をかく
+//            self.deleteMemory(uuid: self.passedIndex.picture!)
+//            self.performSegue(withIdentifier: "back", sender: nil)
+//            
+//            
+//        })
+//        alertController.addAction(cancelAction)
+//        alertController.addAction(deleteAction)
+//        present(alertController,animated: true,completion: nil)
+//        
+//        
+//        
+//    }
     
-    @IBAction func EditButton(_ sender: UIBarButtonItem) {
-        
+   
+    @IBAction func deleteButton(_ sender: UIBarButtonItem) {
+    
         let alertController = UIAlertController(title: "削除しますか？", message: nil, preferredStyle: .alert)
         
         let cancelAction:UIAlertAction = UIAlertAction(title: "やっぱ止める", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
@@ -160,14 +162,17 @@ class List2ViewController: UIViewController
             
             //            coredata削除の処理をかく
             self.deleteMemory(uuid: self.passedIndex.picture!)
-            self.performSegue(withIdentifier: "back", sender: nil)
+//            self.performSegue(withIdentifier: "back", sender: nil)
             
-            
+            self.performSegue(withIdentifier: "backBack", sender: self)
+
 })
         alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)
         present(alertController,animated: true,completion: nil)
-}
+    }
+    
+
     func deleteMemory(uuid:String){
         
         let appdel = UIApplication.shared.delegate as! AppDelegate
@@ -195,4 +200,5 @@ class List2ViewController: UIViewController
         }
         
     }
+    
 }

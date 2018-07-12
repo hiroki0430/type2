@@ -17,8 +17,19 @@ class photo2ViewController: UIViewController {
         super.viewDidLoad()
         
         imageView1.image = image
-        imageView1.contentMode = UIViewContentMode.scaleAspectFit
+//        imageView1.contentMode = UIViewContentMode.scaleAspectFit
         
     }
+    
+    @IBAction func backbutton2(_ sender: UIButton) {
+        
+        imageView1.image = nil
+        self.dismiss(animated: true, completion: nil)
+        
+        
+    }
+    
+    
+    
 
 }
