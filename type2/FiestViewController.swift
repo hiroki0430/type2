@@ -19,7 +19,7 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
     @IBOutlet weak var picture1: UIImageView!
     @IBOutlet weak var textView1: UITextView!
     
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +132,9 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
 
     func createMemory(fes:String, best:String, date:String, impression:String, picture:UIImage){
         
+         let appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+         let manageContext = appDelegate.persistentContainer.viewContext
+        
         print(fes)
         print(best)
         print(date)
@@ -139,37 +142,10 @@ class FiestViewController: UIViewController,UIImagePickerControllerDelegate, UIN
         print(picture)
         
 
-        let appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-
-        let manageContext = appDelegate.persistentContainer.viewContext
-
-        let Memory = NSEntityDescription.entity(forEntityName: "Memory", in:manageContext)
-
-        // contextに１レコード追加
-        let newRecord = NSManagedObject(entity: Memory!, insertInto: manageContext)
-        
-        //        ユニークIDを生成する。
-        let pictureId = NSUUID().uuidString
-        
-        // レコードに値の設定
-        newRecord.setValue(fes, forKey: "fes")
-        newRecord.setValue(date, forKey: "date")
-        newRecord.setValue(best, forKey: "best")
-        newRecord.setValue(impression, forKey: "impression")
-        newRecord.setValue(pictureId, forKey: "picture")
-//        newRecord.setValue(picture, forKey: "picture")
-        storeJpgImageInDocument(image: picture, name: "\(pictureId)")
-        
-        
-//        pictureIdをnewRecord.setValueに入れたのは、キー（パス）をコアデータに保存したかったから。
-//storeJpgImageInDocumentで写真データをフォルダに保存しているよ。
-        
-        
-//pictureIdはクリエイトする際のひと塊りの名前＋写真のキーにもなる。
-//        今後、これをどのように取り出すのか？　例：user defaultを使用。
-        
+       
         do {
-            try manageContext.save()  // throw はdocatchとセットで使う
+            try manageContext.save()
+            // throw はdocatchとセットで使う
         } catch  {
             // errorが出たらこちらに来る
             print("error:",error)

@@ -101,54 +101,6 @@ class List2ViewController: UIViewController
         }
     }
     
-    
-    
-    
-    
-//-----------------------------------------
-//    @IBAction func tapTap(_ sender: UITapGestureRecognizer) {
-//        if sender.state == .ended{
-//            print("111")
-//
-//            let storyboard: UIStoryboard = UIStoryboard(name: "Main2", bundle: nil)
-//            let nextView1 = storyboard.instantiateViewController(withIdentifier: "Photo2") as! photo2ViewController
-//
-//            //            let myView = photo2ViewController()
-//
-//            //        nextView1.image = Picture.image
-//            //            myView.image = Picture.image
-//            present(nextView1, animated: true,
-//                    completion: nil)
-//        }
-//    }
-//-------------------------------------------
-    //    削除ボタンが押された時
-    
-    
-//    @IBAction func deleteBtn(_ sender: UIButton) {
-//        
-//        let alertController = UIAlertController(title: "削除しますか？", message: nil, preferredStyle: .alert)
-//        
-//        let cancelAction:UIAlertAction = UIAlertAction(title: "やっぱ止める", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
-//            
-//        })
-//        
-//        let deleteAction:UIAlertAction = UIAlertAction(title: "削除", style: UIAlertActionStyle .default, handler:{  (action:UIAlertAction) in
-//            
-//            //            coredata削除の処理をかく
-//            self.deleteMemory(uuid: self.passedIndex.picture!)
-//            self.performSegue(withIdentifier: "back", sender: nil)
-//            
-//            
-//        })
-//        alertController.addAction(cancelAction)
-//        alertController.addAction(deleteAction)
-//        present(alertController,animated: true,completion: nil)
-//        
-//        
-//        
-//    }
-    
    
     @IBAction func deleteButton(_ sender: UIBarButtonItem) {
     
